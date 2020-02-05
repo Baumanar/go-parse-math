@@ -10,7 +10,7 @@ import (
 
 func main() {
 	// Setup the input
-	line := "x * x+2*x"
+	line := "sqrt(x)"
 	is := antlr.NewInputStream(line)
 
 	// Create the Lexer
@@ -26,6 +26,6 @@ func main() {
 			lexer.SymbolicNames[t.GetTokenType()], t.GetText())
 	}
 
-	fmt.Printf("The answer is: %d\n", utils.Calc(line)(2))
+	fmt.Printf("The answer is: %f\n", utils.Calc(line)(25.0))
 
 }

@@ -4,20 +4,21 @@ import (
 	"../parser"
 	"fmt"
 	"github.com/antlr/antlr4/runtime/Go/antlr"
+	"math"
 	"strconv"
 )
 
 type calcListener struct {
 	*parser.BaseCalcListener
 
-	stack []func(int)int
+	stack []func(float64)float64
 }
 
-func (l *calcListener) push(i func(int)int) {
+func (l *calcListener) push(i func(float64)float64) {
 	l.stack = append(l.stack, i)
 }
 
-func (l *calcListener) pop() func(int)int {
+func (l *calcListener) pop() func(float64)float64 {
 	if len(l.stack) < 1 {
 		panic("stack is empty unable to pop")
 	}
@@ -37,11 +38,11 @@ func (l *calcListener) ExitMulDiv(c *parser.MulDivContext) {
 
 	switch c.GetOp().GetTokenType()  {
 	case parser.CalcParserMUL:
-		l.push(func(x int)int{
+		l.push(func(x float64)float64{
 			return left(x) * right(x)
 		})
 	case parser.CalcParserDIV:
-		l.push(func(x int)int{
+		l.push(func(x float64)float64{
 			return left(x) / right(x)
 		})
 	default:
@@ -55,11 +56,11 @@ func (l *calcListener) ExitAddSub(c *parser.AddSubContext) {
 
 	switch c.GetOp().GetTokenType() {
 	case parser.CalcParserADD:
-		l.push(func(x int)int{
+		l.push(func(x float64)float64{
 			return left(x) + right(x)
 		})
 	case parser.CalcParserSUB:
-		l.push(func(x int)int{
+		l.push(func(x float64)float64{
 			return left(x) - right(x)
 		})
 	default:
@@ -70,26 +71,38 @@ func (l *calcListener) ExitAddSub(c *parser.AddSubContext) {
 // ExitNumber is called when exiting the Number production.
 func (l *calcListener) ExitNumber(c *parser.NumberContext) {
 
-	i, err := strconv.Atoi(c.GetText())
+	i, err := strconv.ParseFloat(c.GetText(), 64)
 	if err != nil {
 		panic(err.Error())
 	}
 
 	l.push(
-		func(x int) int {
+		func(x float64) float64 {
 			return i
 	})
 }
 func (l *calcListener) ExitVariable(c *parser.VariableContext) {
 
 	l.push(
-		func(x int) int {
-			fmt.Println("here", x)
+		func(x float64) float64 {
+			fmt.Println("Exit variable", x)
 			return x
 		})
 }
+
+func (l *calcListener) ExitSqrt(c *parser.SqrtContext) {
+
+	l.push(
+		func(x float64) float64 {
+			fmt.Println("sqrt", x)
+			return math.Sqrt(x)
+		})
+}
+
+
+
 // calc takes a string expression and returns the evaluated result.
-func Calc(input string) func(int)int {
+func Calc(input string) func(float64)float64 {
 	// Setup the input
 	is := antlr.NewInputStream(input)
 
