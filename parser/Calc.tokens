@@ -1,0 +1,12 @@
+MUL=1
+DIV=2
+ADD=3
+SUB=4
+VAR=5
+NUMBER=6
+WHITESPACE=7
+'*'=1
+'/'=2
+'+'=3
+'-'=4
+'x'=5
