@@ -1,16 +1,15 @@
-// example1.go
 package main
 
 import (
-	"./parser"
-	"./utils"
 	"fmt"
 	"github.com/antlr/antlr4/runtime/Go/antlr"
+	"go-parse-math/parser"
+	"go-parse-math/utils"
 )
 
 func main() {
 	// Setup the input
-	line := "|-3|"
+	line := "ln(e^10)"
 	is := antlr.NewInputStream(line)
 
 	// Create the Lexer
@@ -26,6 +25,6 @@ func main() {
 			lexer.SymbolicNames[t.GetTokenType()], t.GetText())
 	}
 
-	fmt.Printf("The answer is: %f\n", utils.Calc(line)(0.5))
+	fmt.Printf("The answer is: %f\n", utils.Calc(line)(9))
 
 }

@@ -1,9 +1,9 @@
 package utils
 
 import (
-	"../parser"
 	"fmt"
 	"github.com/antlr/antlr4/runtime/Go/antlr"
+	"go-parse-math/parser"
 	"math"
 	"strconv"
 )
@@ -221,6 +221,17 @@ func (l *calcListener) ExitEuler(c *parser.EulerContext) {
 			return math.E
 		})
 }
+
+func (l *calcListener) ExitPow(ctx *parser.PowContext) {
+	pow := l.pop()
+	expr := l.pop()
+	l.push(func(x float64)float64{
+		return math.Pow(expr(x), pow(x))
+	})
+
+}
+
+
 
 // calc takes a string expression and returns the evaluated result.
 func Calc(input string) func(float64)float64 {
