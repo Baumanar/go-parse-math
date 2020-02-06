@@ -68,6 +68,15 @@ func (l *calcListener) ExitAddSub(c *parser.AddSubContext) {
 	}
 }
 
+// ExitMulDiv is called when exiting the MulDiv production.
+func (l *calcListener) ExitMult(c *parser.MultContext) {
+	right, left := l.pop(), l.pop()
+
+	l.push(func(x float64)float64{
+		return left(x) * right(x)
+	})
+}
+
 // ExitNumber is called when exiting the Number production.
 func (l *calcListener) ExitNumber(c *parser.NumberContext) {
 
@@ -91,15 +100,127 @@ func (l *calcListener) ExitVariable(c *parser.VariableContext) {
 }
 
 func (l *calcListener) ExitSqrt(c *parser.SqrtContext) {
-
+	expr := l.pop()
 	l.push(
 		func(x float64) float64 {
-			fmt.Println("sqrt", x)
-			return math.Sqrt(x)
+			return math.Sqrt(expr(x))
+		})
+}
+
+func (l *calcListener) ExitLog(c *parser.LogContext) {
+	expr := l.pop()
+	l.push(
+		func(x float64) float64 {
+			return math.Log10(expr(x))
 		})
 }
 
 
+func (l *calcListener) ExitLn(c *parser.LnContext) {
+	expr := l.pop()
+	l.push(
+		func(x float64) float64 {
+			return math.Log(expr(x))
+		})
+}
+
+
+func (l *calcListener) ExitSin(c *parser.SinContext) {
+	expr := l.pop()
+	l.push(
+		func(x float64) float64 {
+			return math.Sin(expr(x))
+		})
+}
+
+
+func (l *calcListener) ExitSinh(c *parser.SinhContext) {
+	expr := l.pop()
+	l.push(
+		func(x float64) float64 {
+			return math.Sinh(expr(x))
+		})
+}
+
+func (l *calcListener) ExitCos(c *parser.CosContext) {
+	expr := l.pop()
+	l.push(
+		func(x float64) float64 {
+			return math.Cos(expr(x))
+		})
+}
+
+func (l *calcListener) ExitCosh(c *parser.CoshContext) {
+	expr := l.pop()
+	l.push(
+		func(x float64) float64 {
+			return math.Cosh(expr(x))
+		})
+}
+func (l *calcListener) ExitTan(c *parser.TanContext) {
+	expr := l.pop()
+	l.push(
+		func(x float64) float64 {
+			return math.Tan(expr(x))
+		})
+}
+
+func (l *calcListener) ExitTanh(c *parser.TanhContext) {
+	expr := l.pop()
+	l.push(
+		func(x float64) float64 {
+			return math.Tanh(expr(x))
+		})
+}
+
+
+func (l *calcListener) ExitArcsin(c *parser.ArcsinContext) {
+	expr := l.pop()
+	l.push(
+		func(x float64) float64 {
+			return math.Asin(expr(x))
+		})
+}
+
+func (l *calcListener) ExitArccos(c *parser.ArccosContext) {
+	expr := l.pop()
+	l.push(
+		func(x float64) float64 {
+			return math.Acos(expr(x))
+		})
+}
+
+func (l *calcListener) ExitArctan(c *parser.ArctanContext) {
+	expr := l.pop()
+	l.push(
+		func(x float64) float64 {
+			return math.Atan(expr(x))
+		})
+}
+
+func (l *calcListener) ExitAbs(c *parser.AbsContext) {
+	expr := l.pop()
+	l.push(
+		func(x float64) float64 {
+			return math.Abs(expr(x))
+		})
+}
+
+func (l *calcListener) ExitPi(c *parser.PiContext) {
+
+	l.push(
+		func(x float64) float64 {
+			return math.Pi
+		})
+}
+
+func (l *calcListener) ExitEuler(c *parser.EulerContext) {
+
+	l.push(
+		func(x float64) float64 {
+			return math.E
+		})
+}
 
 // calc takes a string expression and returns the evaluated result.
 func Calc(input string) func(float64)float64 {

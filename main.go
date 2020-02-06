@@ -2,15 +2,15 @@
 package main
 
 import (
-	"fmt"
-	"github.com/antlr/antlr4/runtime/Go/antlr"
 	"./parser"
 	"./utils"
-	)
+	"fmt"
+	"github.com/antlr/antlr4/runtime/Go/antlr"
+)
 
 func main() {
 	// Setup the input
-	line := "sqrt(x)"
+	line := "|-3|"
 	is := antlr.NewInputStream(line)
 
 	// Create the Lexer
@@ -26,6 +26,6 @@ func main() {
 			lexer.SymbolicNames[t.GetTokenType()], t.GetText())
 	}
 
-	fmt.Printf("The answer is: %f\n", utils.Calc(line)(25.0))
+	fmt.Printf("The answer is: %f\n", utils.Calc(line)(0.5))
 
 }

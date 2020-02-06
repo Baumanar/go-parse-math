@@ -26,29 +26,30 @@ expression    :    SUB expression                              #Unary          /
               |    FLOOR expression                            #Floor          // Round down to zero accuracy
               |    CEIL expression                             #Ceil           // Round up to zero accuracy
               |    ABS expression                              #Abs            // Absolute value
+              |    ABSLINE expression ABSLINE                        #Abs            // Absolute value
               |    ROUNDK '(' expression ';' expression ')'    #Roundk         // Round expr_1 with expr_2 accuracy
               |    ROUND expression                            #Round          // Round with zero accuracy
               |    TRUNC expression                            #Trunc          // Trim decimal digits
-              |    SIN expression                              #Sin            // Sinus
-              |    COS expression                              #Cos            // Cosinus
-              |    TAN expression                              #Tan            // Tangens
-              |    COT expression                              #Cot            // Cotangens
-              |    SINH expression                             #Sinh           // Sinus Hypererbolicus
-              |    COSH expression                             #Cosh           // Cosinus Hyperbolicus
-              |    TANH expression                             #Tanh           // Tangens Hyperbolicus
-              |    ARCSIN expression                           #Arcsin         // Inverse Sinus
-              |    ARCCOS expression                           #Arccos         // Inverse Cosinus
-              |    ARCTAN expression                           #Arctan         // Inverse Tangens
+              |    SIN '(' expression ')'                      #Sin            // Sinus
+              |    COS '(' expression ')'                      #Cos            // Cosinus
+              |    TAN '(' expression ')'                      #Tan            // Tangens
+              |    COT '(' expression ')'                      #Cot            // Cotangens
+              |    SINH '(' expression ')'                     #Sinh           // Sinus Hypererbolicus
+              |    COSH '(' expression ')'                     #Cosh           // Cosinus Hyperbolicus
+              |    TANH '(' expression ')'                     #Tanh           // Tangens Hyperbolicus
+              |    ARCSIN '(' expression ')'                   #Arcsin         // Inverse Sinus
+              |    ARCCOS '(' expression ')'                   #Arccos         // Inverse Cosinus
+              |    ARCTAN '(' expression ')'                   #Arctan         // Inverse Tangens
               |    ARCTAN2 '(' expression ';' expression ')'   #Arctan2        // Atan2
-              |    ARCCOT expression                           #Arccot         // Inverse Cotangens
+              |    ARCCOT '(' expression ')'                   #Arccot         // Inverse Cotangens
               |    EXP expression                              #Exp            // e ^ expr
-              |    LN expression                               #Ln             // Logarithm to e
+              |    LN '(' expression ')'                       #Ln             // Logarithm to e
               |    EEX expression                              #Eex            // 10 ^ expr
-              |    LOG expression                              #Log            // Logarithm to 10
+              |    LOG '(' expression ')'                      #Log            // Logarithm to 10
               |    RAD expression                              #Rad            // Angle to radians (360� base)
               |    DEG expression                              #Deg            // Radians to angle (360� base)
-              |    SQRT '(' expression ')'                            #Sqrt           // Square root
-              |    SQR expression                              #Sqr            // Square product
+              |    SQRT '(' expression ')'                     #Sqrt           // Square root
+              |    SQR '(' expression ')'                      #Sqr            // Square product
               |    expression EXPONENT expression              #Exponent       // Exponent, e.g. 10e+43
               |    expression NEGEXPONENT expression           #NegExponent    // Inverted Exponent, e.g. 10e-43
               |    expression op=('^'|'**') expression         #Pow            // expr_1 to the expr_2 th power
@@ -63,7 +64,7 @@ expression    :    SUB expression                              #Unary          /
               |    NUMBER                                      #Number         // Single integer or float number
               |    PI '()'?                                    #Pi             // Mathematical constant pi = 3,141593
               |    EULER                                       #Euler          // Mathematical constant e = 2,718282
-              |    VAR                                         #Variable       // Mathematical constant e = 2,718282
+              |    VAR                                         #Variable       // X variable
 
               ;
 
@@ -91,6 +92,7 @@ MUL         : '*'                             ;
 DIV         : '/'                             ;
 ADD         : '+'                             ;
 SUB         : '-'                             ;
+ABSLINE     : '|'                             ;
 PI          : [Pp][Ii]                        ;
 EXPONENT    : [Ee] '+'                        ;
 NEGEXPONENT : [Ee] '-'                        ;
