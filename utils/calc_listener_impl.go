@@ -2,8 +2,8 @@ package utils
 
 import (
 	"fmt"
+	"github.com/Baumanar/go-parse-math/parser"
 	"github.com/antlr/antlr4/runtime/Go/antlr"
-	"go-parse-math/parser"
 	"math"
 	"strconv"
 )
