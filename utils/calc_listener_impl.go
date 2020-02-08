@@ -94,7 +94,6 @@ func (l *calcListener) ExitVariable(c *parser.VariableContext) {
 
 	l.push(
 		func(x float64) float64 {
-			fmt.Println("Exit variable", x)
 			return x
 		})
 }
@@ -104,6 +103,24 @@ func (l *calcListener) ExitSqrt(c *parser.SqrtContext) {
 	l.push(
 		func(x float64) float64 {
 			return math.Sqrt(expr(x))
+		})
+}
+
+
+
+func (l *calcListener) ExitUnary(c *parser.UnaryContext) {
+	expr := l.pop()
+	l.push(
+		func(x float64) float64 {
+			return expr(-x)
+		})
+}
+
+func (l *calcListener) ExitUnaryPlus(c *parser.UnaryPlusContext) {
+	expr := l.pop()
+	l.push(
+		func(x float64) float64 {
+			return expr(x)
 		})
 }
 
